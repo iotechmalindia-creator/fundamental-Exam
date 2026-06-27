@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IOTech Computer Education - Commission Chart</title>
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f2f2f2;
+        }
+        .container {
+            width: 500px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px gray;
+        }
+        h2 {
+            text-align: center;
+            color: darkblue;
+        }
+        h3 {
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>IOTech Computer Education</h2>
+    <h3>Students Commission Calculation Chart</h3>
+
+    <label>Admission Fee:</label>
+    <input type="number" id="admission" oninput="calculateAll()">
+
+    <label>Monthly Fee:</label>
+    <input type="number" id="monthly" oninput="calculateAll()">
+
+    <label>Total Students:</label>
+    <input type="number" id="students" oninput="calculateAll()">
+
+    <label>Instant Commission:</label>
+    <input type="number" id="instantCommission" readonly>
+
+    <label>EMI Commission (Slab Based %):</label>
+    <input type="text" id="emiCommission" readonly>
+
+</div>
+
+<script>
+function calculateAll() {
+
+    let admission = parseFloat(document.getElementById("admission").value) || 0;
+    let monthly = parseFloat(document.getElementById("monthly").value) || 0;
+    let students = parseFloat(document.getElementById("students").value) || 0;
+
+    let instantCommission = 0;
+
+    // 🔹 Instant Commission Rule
+    if (students == 1) {
+        instantCommission = admission * 10 / 100;  // 10% if 1 student
+    } 
+    else if (students > 1) {
+        instantCommission = (admission * 20 / 100) * students;  // 20% × students
+    }
+
+    document.getElementById("instantCommission").value = instantCommission.toFixed(2);
+
+    // 🔹 EMI Commission Slab System
+    let emiBox = document.getElementById("emiCommission");
+
+    if (students <= 1) {
+        emiBox.value = "Not Payable";
+        emiBox.style.color = "red";
+        emiBox.style.fontWeight = "bold";
+        return;
+    }
+
+    let percent = 0;
+
+    if (students >= 2 && students <= 3) {
+        percent = 10;
+    } 
+    else if (students >= 4 && students <= 5) {
+        percent = 12;
+    } 
+    else if (students >= 6 && students <= 8) {
+        percent = 14;
+    } 
+    else if (students >= 9) {
+        percent = 18;
+    }
+
+    let emiCommission = (monthly * students) * percent / 100;
+
+    emiBox.value = emiCommission.toFixed(2) + " (" + percent + "%)";
+    emiBox.style.color = "black";
+    emiBox.style.fontWeight = "normal";
+}
+</script>
+
+</body>
+</html>
